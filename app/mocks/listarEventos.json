@@ -1,0 +1,25 @@
+{
+  "eventos": [
+    {
+      "nomeEvento": "Encontro Semanal",
+      "dataEvento": "19/08/2017",
+      "responsaveis": [
+        {
+          "nomeResponsavel": "Raphael"
+        },
+        {
+          "nomeResponsavel": "Priscila"
+        }
+      ]
+    },
+    {
+      "nomeEvento": "Consagração",
+      "dataEvento": "19/08/2017",
+      "responsaveis": [
+        {
+          "nomeResponsavel": "Raphael"
+        }
+      ]
+    }
+  ]
+}
