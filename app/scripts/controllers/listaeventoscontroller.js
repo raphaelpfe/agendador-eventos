@@ -14,7 +14,7 @@ angular.module('agendadorDeEventosApp')
     var vm = this;
 
     activate(); 
-
+    //teste de versão do git
     function activate(){
       vm.gridOptions = {
                 data: [],
