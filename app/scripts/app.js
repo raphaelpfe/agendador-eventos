@@ -44,6 +44,11 @@ angular
         controller: 'ListaEventosController',
         controllerAs: 'listaEventosCtrl'
       })
+      .when('/responsaveis', {
+        templateUrl: 'views/responsaveis.html',
+        controller: 'ResponsaveisController',
+        controllerAs: 'responsaveisCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

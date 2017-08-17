@@ -13,6 +13,7 @@
     .controller('AgendadorCtrl', function (agendadorService) {
 
       var vm = this;
+      vm.eventos = [];
 
       vm.salvarEvento = salvarEvento;
       vm.salvarResponsavel = salvarResponsavel;
@@ -27,6 +28,8 @@
 
       function salvarEvento(evento) {
         vm.eventos.push(evento);
+        limparCampos();
+
       }
 
       function salvarResponsavel(evento, nomeResponsavel) {
@@ -34,6 +37,10 @@
         vm.evento.responsaveis.push({
           "nomeResponsavel": nomeResponsavel
         });
+      }
+
+      function limparCampos(){
+        vm.evento = "";
       }
     });
 })();
