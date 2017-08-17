@@ -12,8 +12,13 @@ angular.module('agendadorDeEventosApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
     
     this.listarEventos = listarEventos;
+    this.listarResponsaveis = listarResponsaveis;
 
     function listarEventos(){
+      return $http.get('../../mocks/listarEventos.json');
+    }
+
+    function listarResponsaveis(){
       return $http.get('../../mocks/listarEventos.json');
     }
   });

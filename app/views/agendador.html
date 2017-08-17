@@ -1,85 +1,96 @@
 <div class="container">
     <div class="panel panel-default">
-    
-    <div class="panel-heading">Cadastro de Evento</div>
-    <div class="panel-body">
-    <!--<div class="col-md-12" ng-show="agendador.msg">
+
+        <div class="panel-heading">Cadastro de Evento</div>
+        <div class="panel-body">
+            <!--<div class="col-md-12" ng-show="msg">
     <div class="alert alert-warning">
-      <h5>{{agendador.msg}}</h5>
-      <button type="button" class="btn btn-primary" ng-click="agendador.excluirRecurso(pos, true)">Sim</button>
-      <button type="button" class="btn btn-default" ng-click="agendador.msg = ''; pos = -1">Não</button>
+      <h5>{{msg}}</h5>
+      <button type="button" class="btn btn-primary" ng-click="excluirRecurso(pos, true)">Sim</button>
+      <button type="button" class="btn btn-default" ng-click="msg = ''; pos = -1">Não</button>
     </div>
   </div>-->
 
-    <form name="cadastroEvento">
-        <div class="row">
-            <div class="col-md-6" ng-class="{ 'has-error': cadastroEvento.nomeEvento.$invalid }">
-                <div class="form-group">
-                    <label>Nome Evento</label>
-                    <input type="text" name="nomeEvento" class="form-control" ng-model="agendador.evento.nomeEvento" required />
-                </div>
-            </div>
-            <div class="col-md-6" ng-class="{ 'has-error': cadastroEvento.dataEvento.$invalid }">
-                <div class="form-group">
-                    <label>Data Evento</label>
-                    <input type="date" name="dataEvento" class="form-control" ng-model="agendador.evento.dataEvento" required />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8" ng-class="{ 'has-error': cadastroEvento.nomeResponsavel.$invalid }">
-                <div class="form-group">
-                    <label>Nome Responsavel</label>
-                    <div class="input-group">
-                    <input type="text" name="nomeResponsavel" class="form-control" ng-model="nomeResponsavel" required ng-disabled="cadastroEvento.nomeEvento.$invalid || cadastroEvento.dataEvento.$invalid" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary"  ng-click="agendador.salvarResponsavel(agendador.evento, nomeResponsavel)" ng-disabled="cadastroEvento.nomeResponsavel.$invalid">
-                            <span class="glyphicon glyphicon-plus" ></span>
-                        </button>
-                    </span>
+            <form name="cadastroEvento">
+                <div class="row">
+                    <div class="col-md-6" ng-class="{ 'has-error': cadastroEvento.nomeEvento.$invalid && cadastroEvento.nomeEvento.$dirty}">
+                        <div class="form-group">
+                            <label>Nome Evento</label>
+                            <input type="text" name="nomeEvento" class="form-control" ng-model="evento.nomeEvento" ng-required="true" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error': cadastroEvento.dataEvento.$invalid && cadastroEvento.dataEvento.$dirty}">
+                            <label>Data Evento</label>
+                            <input type="date" name="dataEvento" class="form-control" ng-model="evento.dataEvento" ng-required="true" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <button type="button" class="btn btn-primary" ng-click="agendador.salvarEvento(agendador.evento)" ng-disabled="cadastroEvento.$invalid || !agendador.evento.responsaveis || agendador.evento.responsaveis.length === 0">Salvar Evento</button>
-            </div>
-        </div>
-    </form>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>Nome Responsavel</label>
+                            <div class="input-group">
+                                <input type="text" name="nomeResponsavel" class="form-control" ng-model="nomeResponsavel" required ng-disabled="cadastroEvento.nomeEvento.$invalid || cadastroEvento.dataEvento.$invalid"
+                                />
+                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary"  ng-click="salvarResponsavel(evento, nomeResponsavel)" ng-disabled="cadastroEvento.nomeResponsavel.$invalid">
+                            <span class="glyphicon glyphicon-plus" ></span>
+                                </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-condensed table-striped">
-                <tr>
-                    <th class="col-md-5">
-                        Nome
-                    </th>
-                    <th class="col-md-2">
-                        Ações
-                    </th>
-                </tr>
-                <tr ng-repeat="responsavel in agendador.evento.responsaveis">
-                    <td>
-                        {{responsavel.nomeResponsavel}}
-                    </td>
-                    <td>
-                        <div class="col-md-6">
-                            <!--<button class="btn" ng-click="agendador.excluirRecurso($index)">              
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" ng-click="salvarEvento(evento).$setPristine()" ng-disabled="cadastroEvento.$invalid || !evento.responsaveis || evento.responsaveis.length === 0">Salvar Evento</button>
+                    </div>
+                </div>
+            </form>
+            
+            <div ng-show="cadastroEvento.nomeEvento.$dirty && cadastroEvento.nomeEvento.$error.required" class="alert alert-danger" >
+                Por favor, informar o nome do evento!
+            </div>
+            <div ng-show="cadastroEvento.dataEvento.$dirty && cadastroEvento.dataEvento.$error.required" class="alert alert-danger">
+                Por favor, informar a data do evento!
+            </div>
+            <p />
+            <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?" />
+            <p />                
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-condensed table-striped">
+                        <tr>
+                            <th class="col-md-5">
+                                <a href="" ng-click="ordenarPorNome('nomeResponsavel')">Nome</a>
+                            </th>
+                            <th class="col-md-2">
+                                Ações
+                            </th>
+                        </tr>
+                        <tr ng-repeat="responsavel in evento.responsaveis | filter: criterioDeBusca | orderBy:criterioDeOrdenacao : direcaoDaOrdenacao">
+                            <td>
+                                {{responsavel.nomeResponsavel}}
+                            </td>
+                            <td>
+                                <div class="col-md-6">
+                                    <!--<button class="btn" ng-click="excluirRecurso($index)">              
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                             </button>-->
-                        </div>
-                        <div class="col-md-6">
-                            <!--<button class="btn" ng-click="agendador.editarRecurso($index)">
+                                </div>
+                                <div class="col-md-6">
+                                    <!--<button class="btn" ng-click="editarRecurso($index)">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>-->
-                        </div>
-                    </td>
-                </tr>
-            </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 </div>

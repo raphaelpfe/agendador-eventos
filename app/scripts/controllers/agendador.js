@@ -10,37 +10,45 @@
    */
   angular
     .module('agendadorDeEventosApp')
-    .controller('AgendadorCtrl', function (agendadorService) {
+    .controller('AgendadorCtrl', function (agendadorService, $scope) {
 
-      var vm = this;
-      vm.eventos = [];
+      $scope.eventos = [];
 
-      vm.salvarEvento = salvarEvento;
-      vm.salvarResponsavel = salvarResponsavel;
-      //vm.editarEvento = editarEvento;
-      //vm.excluirEvento = eventoEvento;
+      $scope.salvarEvento = salvarEvento;
+      $scope.salvarResponsavel = salvarResponsavel;
+      $scope.limparCampos = limparCampos;
+      $scope.ordenarPorNome = ordenarPorNome;
 
-      /*vm.evento = {
+      //$scope.editarEvento = editarEvento;
+      //$scope.excluirEvento = eventoEvento;
+
+      /*$scope.evento = {
         "nomeEvento": "",
         "dataEvento": "",
         "responsaveis": []
       };*/
 
       function salvarEvento(evento) {
-        vm.eventos.push(evento);
-        limparCampos();
-
+        $scope.eventos.push(evento);
+        $scope.limparCampos();
+        $scope.cadastroEvento.$setPristine();
       }
 
       function salvarResponsavel(evento, nomeResponsavel) {
-        vm.evento.responsaveis = evento.responsaveis ? evento.responsaveis : [];
-        vm.evento.responsaveis.push({
+        $scope.evento.responsaveis = evento.responsaveis ? evento.responsaveis : [];
+        $scope.evento.responsaveis.push({
           "nomeResponsavel": nomeResponsavel
         });
       }
+      
+      function ordenarPorNome(campo) {
+        $scope.criterioDeOrdenacao = campo;
+        $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
+      }
 
-      function limparCampos(){
-        vm.evento = "";
+
+      function limparCampos() {
+        $scope.evento = "";
       }
     });
 })();

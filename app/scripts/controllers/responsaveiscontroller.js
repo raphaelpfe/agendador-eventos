@@ -18,18 +18,20 @@ angular.module('agendadorDeEventosApp')
     activate(); 
 
     function activate(){
-      agendadorService.listarEventos().then(
-          function sucess(response){
-            if (response.data.eventos.responsaveis){
-              vm.responsaveis = response.data.eventos.responsaveis;
-            }else{
-              vm.responsaveis = [];
+        agendadorService.listarResponsaveis().then(
+        function sucess(response){
+          if (response.data.eventos){
+            for (var evento in response.data.eventos) {
+              vm.responsaveis = response.data.eventos[evento].responsaveis                              
             }
-          },
-          function error(responseError) {
-              console.log('erro na chamada da mensagem');
+          }else{
+            vm.responsaveis = [];
           }
-        );
+        },
+        function error(responseError) {
+            console.log('erro na chamada da mensagem');
+        }
+      );
     }
     
   });
