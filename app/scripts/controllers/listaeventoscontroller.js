@@ -9,34 +9,36 @@
    * Controller of the agendadorDeEventosApp
    */
   angular.module('agendadorDeEventosApp')
-    .controller('ListaEventosController', function (agendadorService, $uibModal) {
-
-      var vm = this;
-
-      activate();
+    .controller('ListaEventosController', function (agendadorService, $uibModal, $scope, $rootScope, $location, $timeout) {   
+      $rootScope.activetab = $location.path();
 
       function activate() {
-        vm.gridOptions = {
+        $scope.isSaved = false;
+        $scope.name = 'ListaEventos';
+
+        $scope.gridOptions = {
           data: [],
           saveFocus: false,
           saveScroll: true,
-          saveGroupingExpandedStates: true,
-          enableFiltering: true,
-          enableSorting: true,
-          enableGridMenu: true,
-          enableColumnResizing: true,
+          saveGroupingExpandedStates: false,
+          enableFiltering: false,
+          enableSorting: false,
+          enableGridMenu: false,
+          enableColumnResizing: false,
           treeRowHeaderAlwaysVisible: false,
           paginationPageSizes: [10, 25, 50, 100],
           paginationPageSize: 10,
-          useExternalPagination: true,
+          useExternalPagination: false,
           enableRowSelection: true,
           enableFullRowSelection: true,
           enableRowHeaderSelection: false,
           multiSelect: false,
-          showGridFooter: true,
-          onRegisterApi: function () {
-            function showModal(row) {
-              isSaved = false;
+          showGridFooter: false,
+          onRegisterApi: function (gridApi) {
+            $scope.gridApi = gridApi;
+            
+            gridApi.selection.on.rowSelectionChanged($scope,function (row) {
+              $scope.isSaved = false;
               $uibModal.open({
                 templateUrl: 'views/responsaveis.html',
                 controller: 'ResponsaveisController',
@@ -46,9 +48,9 @@
                 }
               }).result.then(function (ret) {
                 row.entity = ret;
-                isSaved = true;
+                $scope.isSaved = true;
               });
-            }
+            });
           },
           columnDefs: [
             /*{
@@ -60,22 +62,22 @@
             {
               field: 'nomeEvento',
               displayName: "Nome do Evento",
-              width: '200',
+              width: '50%',
               enableFiltering: false
             }, {
               field: 'dataEvento',
               displayName: "Data do Evento",
               cellFilter: 'date',              
-              width: '180',
+              width: '50%',
               enableFiltering: true
             },
-            {
+            /*{
               field: 'responsaveis',
               displayName: "Responsáveis",
-              cellTemplate: '<div class="text-center ui-grid-cell-contents"><button id="editBtn" type="button" ng-if="row.entity.responsaveis.length > 1" class="btn-small" ng-click="vm.showModal()"><span class="glyphicon glyphicon-search"></span></button><span ng-if="row.entity.responsaveis.length === 1" >{{row.entity.responsaveis[0].nomeResponsavel}}</span></div>',
+              cellTemplate: '<div class="text-center ui-grid-cell-contents"><button id="editBtn" type="button" ng-if="row.entity.responsaveis.length > 1" class="btn-small" ng-click="showResponsaveisModal()"><span class="glyphicon glyphicon-search"></span></button><span ng-if="row.entity.responsaveis.length === 1" >{{row.entity.responsaveis[0].nomeResponsavel}}</span></div>',
               width: '180',
               enableFiltering: false
-            }
+            }*/
 
           ]
         };
@@ -83,9 +85,9 @@
         agendadorService.listarEventos().then(
           function sucess(response) {
             if (response.data.eventos) {
-              vm.gridOptions.data = response.data.eventos;
+              $scope.gridOptions.data = response.data.eventos;
             } else {
-              vm.gridOptions.data = [];
+              $scope.gridOptions.data = [];
             }
           },
           function error(responseError) {
@@ -93,13 +95,12 @@
           }
         );
 
-
         /*agendadorService.listarResponsaveis().then(
           function sucess(response){
             if (response.data.responsaveis){
-              vm.responsaveis = response.data.responsaveis;
+              $scope.responsaveis = response.data.responsaveis;
             }else{
-              vm.responsaveis = [];
+              $scope.responsaveis = [];
             }
           },
           function error(responseError) {
@@ -108,5 +109,6 @@
         );*/
       }
 
+    activate();
     });
 })();
